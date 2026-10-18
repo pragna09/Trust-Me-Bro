@@ -99,4 +99,4 @@ Open your browser and navigate to:
 
 ## 👥 Team
 
-Developed by **TrustMeBro**.
+Developed by **TrustMeBro** - Nishi, Pragna, Ria, Shriya, Tvisha, Vedangi.
