@@ -1,57 +1,55 @@
-Recall Triage 🚨
 
-Automated FDA Recall Analysis, Geographic Mapping, and Risk Triage
+# Recall Triage 🚨
 
-Recall Triage is an enterprise-grade platform that automates the collection, geographic mapping, and risk analysis of FDA recalls. By analyzing complex recall datasets—such as food contamination from Listeria, dangerous allergens, or foreign objects—Recall Triage enables supply chain managers, retailers, and consumers to immediately identify high-priority local threats and act fast.
+### Automated FDA Recall Analysis, Geographic Mapping, and Risk Triage
 
-📸 Key Features
+Recall Triage is an enterprise-grade platform that automates the collection, geographic mapping, and risk analysis of FDA recalls. By analyzing complex recall datasets—such as food contamination from *Listeria*, dangerous allergens, or foreign objects—Recall Triage enables supply chain managers, retailers, and consumers to identify high-priority local threats and act quickly.
 
-Geographic Risk Analysis: Cross-references FDA distribution data against target regions (e.g., Texas) to assess immediate local impact.
+## 📸 Key Features
 
-Automated Urgency Categorization: Classifies recalls into actionable urgency levels, such as "Pull now" versus "Monitor."
+- **Geographic Risk Analysis:** Cross-references FDA distribution data against target regions (e.g., Texas) to assess immediate local impact.
+- **Automated Urgency Categorization:** Classifies recalls into actionable urgency levels, such as `Pull now` versus `Monitor`.
+- **Interactive Timeline Replay:** Dynamically steps through FDA product recall timelines to observe how risks evolve over time.
+- **Regional Breakdown Metrics:** Displays top state-level alerts, keyword accuracy statistics, and distribution coverage.
+- **Interactive Risk Scoring Tool:** Accepts new variables (e.g., pathogens, allergens, and affected lots) to calculate custom risk scores and support supplier risk assessments against the database.
 
-Interactive Timeline Replay: Dynamically step through FDA product recall timelines to observe spreading risks over time.
+## 🛠️ Architecture & Tech Stack
 
-Regional Breakdown Metrics: View top state-level alerts, keyword accuracy stats, and distribution coverage.
+Recall Triage is designed to run on secure, high-performance infrastructure to support the processing of critical public safety data from the [openFDA Food Enforcement API](https://open.fda.gov/apis/food/enforcement/).
 
-Interactive Risk Scoring Tool: Input new variables (e.g., pathogens, allergens, affected lots) to calculate custom risk scores or audit suppliers against our database.
+- **Backend Environment:** IBM LinuxONE cloud instance for high-performance computing, cryptographic protection, and enterprise security.
+- **Backend Processing:** Python 3, isolated using a Python virtual environment.
+- **Frontend Interface:** Interactive web dashboard accessible through modern web browsers, including Google Chrome.
+- **Version Control:** GitHub — [Trust-Me-Bro/Recall-Triage](https://github.com/Trust-Me-Bro/Recall-Triage).
 
-🛠️ Architecture & Tech Stack
+## 🚀 Getting Started & Local Setup
 
-Recall Triage is built to run on secure, high-performance infrastructure to ensure the safe processing of critical public safety data from the openFDA Food Enforcement API.
+Follow these steps to connect to the IBM LinuxONE server and access the application through SSH port forwarding.
 
-Backend Environment: Hosted on an IBM LinuxONE cloud instance for high-performance computing, cryptographic protection, and enterprise security.
+### Prerequisites
 
-Backend Processing: Python 3 (isolated using a Python virtual environment).
+- An SSH private key (`.pem` or equivalent) stored locally.
+- Python 3 installed on the remote instance.
+- Git installed on the remote instance.
+- A modern web browser, such as Google Chrome.
+- SSH access to the IBM LinuxONE instance.
 
-Frontend Interface: Clean, interactive web dashboard accessible via Google Chrome / web browser.
+### Step 1: Connect to the IBM LinuxONE Server
 
-Version Control: GitHub (Trust-Me-Bro repository).
+Open a terminal, navigate to the directory containing your SSH private key, and connect to the remote instance:
 
-🚀 Getting Started & Local Setup
-
-Follow these steps to connect to the IBM LinuxONE server and run the application locally via SSH port forwarding.
-
-Prerequisites
-
-Private SSH key (.pem / key file) stored locally.
-
-Python 3 installed on the remote instance.
-
-Modern web browser (e.g., Google Chrome).
-
-Step 1: Connect to IBM LinuxONE Server
-
-Open your terminal, navigate to the directory containing your SSH key, and connect to the remote instance:
-
+```bash
 cd ~/Downloads
 ssh -i your-private-key.pem user@your-linuxone-ip
+```
 
+Replace `your-private-key.pem`, `user`, and `your-linuxone-ip` with your actual credentials and server address.
 
-Step 2: Clone Repository & Set Up Virtual Environment
+### Step 2: Clone the Repository and Set Up the Virtual Environment
 
-Once connected to the IBM LinuxONE server:
+Once connected to the IBM LinuxONE server, run:
 
+```bash
 # Clone the repository
 git clone https://github.com/Trust-Me-Bro/Recall-Triage.git
 cd Recall-Triage
@@ -62,37 +60,43 @@ source venv/bin/activate
 
 # Install dependencies
 pip install -r requirements.txt
+```
 
+### Step 3: Start the Application Server
 
-Step 3: Boot Up the Application Server
+With the virtual environment activated, start the backend application:
 
-Start the backend web server inside your activated virtual environment:
-
+```bash
 python app.py
+```
 
+Keep this terminal session running while using the dashboard.
 
-Step 4: Access Dashboard via Port Forwarding
+> **Note:** The application must listen on port `8000` for the port-forwarding command below to work. If the server uses a different port, update the forwarding configuration accordingly.
 
-In a second terminal window on your local machine, open an SSH port forwarding tunnel to direct traffic from port 8000 on the LinuxONE server to your local machine:
+### Step 4: Access the Dashboard via SSH Port Forwarding
 
-ssh -N -L 8000:localhost:8000 -i ~/Downloads/your-private-key.pem user@your-linuxone-ip
+Open a **second terminal window on your local machine** and establish an SSH tunnel that forwards local port `8000` to port `8000` on the remote server:
 
+```bash
+ssh -N -L 8000:localhost:8000 \
+  -i ~/Downloads/your-private-key.pem \
+  user@your-linuxone-ip
+```
+
+Keep the SSH tunnel running. Replace the placeholder key path, username, and server address with your actual values.
 
 Open your browser and navigate to:
 
-http://localhost:8000
+**http://localhost:8000**
 
+## 📊 Using the Dashboard
 
-📊 Using the Dashboard
+- **Timeline Replay:** Click **Restart replay** to step through FDA recall events chronologically.
+- **Actionable Urgency Tags:** Review tags such as `Pull now` for high-priority regional threats (e.g., active distribution in Texas) and `Monitor` for lower-priority items.
+- **Analytics:** Explore regional breakdown charts, top local alerts, and system accuracy statistics.
+- **Interactive Risk Scorer:** Use the scoring panel to enter recall variables, such as *Listeria* detection, and calculate real-time threat scores to support supply chain risk assessment.
 
-Timeline Replay: Click "Restart replay" to step through FDA recall events chronologically.
+## 👥 Team
 
-Actionable Urgency Tags: Look for explicit tags like "Pull now" for immediate regional threats (e.g., active distribution in Texas) or "Monitor" for lower-risk/distant items.
-
-Analytics: Scroll down to view regional breakdown charts, top local alerts, and system accuracy statistics.
-
-Interactive Scorer: Use the bottom panel to input mock recall variables (such as Listeria detection) to calculate real-time threat scores for your supply chain.
-
-👥 Team
-
-Developed by TrustMeBro.
+Developed by **TrustMeBro**.
