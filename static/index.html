@@ -1,200 +1,151 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Recall Triage</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600" rel="stylesheet">
-<style>
-:root{
- --g1:#46716f;--g2:#8aa39a;--g3:#b9c0b0;--panel:#f7f1eb;--ink:#1c2b2a;--mute:#69766f;--line:rgba(28,43,42,.11);--soft:#ece5dd;
- --accent:#1f3b3a;--pull:#b5472f;--pull-bg:rgba(181,71,47,.12);--review:#a87b1f;--review-bg:rgba(168,123,31,.14);--monitor:#3b7a69;--monitor-bg:rgba(59,122,105,.13);--good:#3b7a69}
-*{box-sizing:border-box}
-html{background:linear-gradient(200deg,var(--g1) 0%,var(--g2) 45%,var(--g3) 100%) fixed}
-body{margin:0;color:var(--ink);font:14px/1.5 "Hanken Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh}
-.num{font-variant-numeric:tabular-nums}
-:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-header.top{border:0;background:none;color:#fff}
-.top-in{max-width:1280px;margin:0 auto;padding:36px 28px 28px;display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
-.brand{font-size:18px;font-weight:600;letter-spacing:-.01em;margin-bottom:56px}
-h1{margin:0;font-size:clamp(38px,5.6vw,68px);font-weight:300;letter-spacing:-.035em;line-height:1.02}
-.sub{margin:16px 0 0;color:rgba(255,255,255,.88);font-size:15px;max-width:52ch}
-.pill{font-size:12px;color:#fff;border:1px solid rgba(255,255,255,.55);border-radius:99px;padding:7px 16px;max-width:46ch}
-main{max-width:1280px;margin:0 auto;padding:8px 28px 56px;display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:20px;align-items:start}
-@media(max-width:1020px){main{grid-template-columns:1fr}}
-.col{display:grid;gap:20px;min-width:0}
-.panel{background:var(--panel);border-radius:18px;min-width:0;overflow:hidden;box-shadow:0 8px 28px rgba(20,40,38,.14)}
-.ph{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 22px 12px}
-.ph h2{margin:0;font-size:17px;font-weight:600;letter-spacing:-.01em}
-.ph .hint{color:var(--mute);font-size:12px}
-.pb{padding:6px 22px 22px}
-table{width:100%;border-collapse:collapse}
-th,td{text-align:left;padding:12px 22px;border-top:1px solid var(--line)}
-th{font-weight:500;color:var(--mute);font-size:12px}
-td.v,th.v{text-align:right}
-.delta{color:var(--good);font-weight:600}
-.note{margin:0;padding:14px 22px;border-top:1px solid var(--line);color:var(--mute);font-size:12.5px}
-.row{display:grid;grid-template-columns:4px 1fr auto;gap:16px;padding:16px 22px;border-top:1px solid var(--line)}
-.row.new{animation:in .4s ease-out}
-@keyframes in{from{background:#fff}to{background:transparent}}
-@media(prefers-reduced-motion:reduce){.row.new{animation:none}}
-.rail{border-radius:4px;background:var(--monitor)}
-.row.PULL .rail{background:var(--pull)}.row.REVIEW .rail{background:var(--review)}
-.firm{font-weight:600}
-.prod{margin-top:2px}
-.reason{color:var(--mute);font-size:13px;margin-top:2px}
-.meta{display:flex;flex-wrap:wrap;gap:4px 16px;margin-top:8px;color:var(--mute);font-size:12px}
-.meta b{color:var(--ink);font-weight:500}
-.side{text-align:right;min-width:100px}
-.badge{display:inline-block;font-size:11px;font-weight:600;padding:3px 10px;border-radius:99px}
-.badge.PULL{background:var(--pull-bg);color:var(--pull)}.badge.REVIEW{background:var(--review-bg);color:var(--review)}.badge.MONITOR{background:var(--monitor-bg);color:var(--monitor)}
-.score{font-size:32px;font-weight:300;letter-spacing:-.03em;margin-top:4px;line-height:1}
-.bar{height:3px;background:var(--line);border-radius:4px;margin-top:6px;overflow:hidden}
-.bar i{display:block;height:100%;background:var(--ink)}
-.saved{margin-top:8px;font-size:12px;color:var(--good);font-weight:500}
-.empty,.err{padding:30px 22px;color:var(--mute);text-align:center}
-.err{color:var(--pull)}
-.scroll{max-height:560px;overflow:auto}
-.tabs{display:flex;gap:4px;margin:18px 22px 6px;padding:4px;background:var(--soft);border-radius:12px}
-.tab{flex:1;padding:8px 12px;background:none;border:0;border-radius:9px;color:var(--mute);font:inherit;font-weight:500;cursor:pointer}
-.tab[aria-selected=true]{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(20,40,38,.12)}
-label{display:block;font-size:12px;font-weight:500;color:var(--mute);margin:14px 0 5px}
-label:first-child{margin-top:0}
-input,textarea{width:100%;background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font:inherit}
-input:focus,textarea:focus{border-color:var(--accent);outline:0}
-.btn{background:var(--accent);color:#fff;border:0;border-radius:10px;padding:10px 20px;font:inherit;font-weight:500;cursor:pointer}
-.btn:disabled{opacity:.6;cursor:wait}
-.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
-.actions{margin-top:16px;display:flex;gap:8px}
-.result{margin-top:18px;border-radius:12px;padding:14px 16px;background:var(--soft)}
-.result .big{font-size:36px;font-weight:300;letter-spacing:-.03em;margin-right:10px;vertical-align:middle}
-.sup{padding:12px 0;border-top:1px solid var(--line)}
-.sup:first-child{border-top:0}
-.sup h3{margin:0 0 4px;font-size:13px;font-weight:600}
-.sup .row{padding:10px 0;grid-template-columns:4px 1fr}
-.sup .row .side{display:none}
-.privacy{font-size:12px;color:var(--mute);margin:0 0 12px}
-[hidden]{display:none!important}
-</style></head><body>
-<header class="top"><div class="top-in">
- <div><div class="brand">Recall Triage</div><h1>Spot serious recalls<br>before FDA classifies them</h1><p class="sub">Severity and reach of Texas food recalls, scored as FDA notices arrive.</p></div>
- <span class="pill">Replay of held-out FDA recalls, scored before FDA classified them</span>
-</div></header>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Recall Triage</title>
+    <style>
+      :root{--frost:#EDF2F4;--white:#FBFDFE;--ink:#12202B;--steel:#4F6D7A;--line:#CAD6DC;--red:#C8102E;--amber:#E59500;--tile:#DCE5E9;
+      --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+      *{box-sizing:border-box}body{margin:0;background:var(--frost);color:var(--ink);font:16px/1.5 var(--sans)}
+      .wrap{max-width:1120px;margin:0 auto;padding:0 20px 56px}
+      .top{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:18px 0}
+      .top b{font-size:18px;letter-spacing:-.01em;margin-right:auto}
+      .chip{font-size:13px;border:1px solid var(--line);background:var(--white);padding:3px 10px;border-radius:99px;color:var(--steel)}
+      h1{font-size:clamp(28px,4.6vw,46px);line-height:1.08;letter-spacing:-.025em;font-weight:800;margin:14px 0 22px;max-width:18em}
+      h2{font-size:22px;letter-spacing:-.01em;margin:0 0 6px}
+      .stage{display:grid;grid-template-columns:1.1fr 1fr;background:var(--white);border:1px solid var(--line);--c:var(--steel);--t:#fff}
+      .stage[data-k=pull]{--c:var(--red)}.stage[data-k=review]{--c:var(--amber);--t:var(--ink)}.stage[data-k=none]{--c:#8FA3AD;--t:var(--ink)}
+      .stage[data-k=pull]{--c:var(--red)}.stage[data-k=review]{--c:var(--amber);--t:var(--ink)}.stage[data-k=none]{--c:#8FA3AD;--t:var(--ink)}.stage[data-k=monitor]{--c:#2B669A}
+      .slab{background:var(--c);color:var(--t);padding:26px 28px;min-width:0;transition:background .35s}
+      .tag{margin:0 0 14px;font-size:13px;opacity:.9}
+      .tier{font-size:clamp(40px,7vw,76px);font-weight:800;line-height:.95;letter-spacing:-.035em;margin-bottom:18px}
+      .slab p{margin:0 0 8px}.why{font-size:15px;opacity:.95}
+      .lots{margin-top:16px;padding-top:12px;border-top:1px solid currentColor;font-size:13px}
+      .lots code{display:block;margin-top:4px;font:14px/1.4 var(--mono);overflow-wrap:anywhere;max-height:84px;overflow:auto}
+      .mapbox{padding:22px 24px;display:flex;flex-direction:column;justify-content:center;min-width:0}
+      #map{display:grid;grid-template-columns:repeat(11,1fr);grid-template-rows:repeat(8,1fr);gap:3px}
+      .tl{aspect-ratio:1;display:grid;place-items:center;background:var(--tile);color:#6B8794;font-size:clamp(8px,1.3vw,12px);font-weight:600;transition:background .3s,color .3s}
+      .tl.lit{background:var(--c);color:var(--t);transition-delay:calc(var(--d)*28ms)}
+      .tl.tx{outline:3px solid var(--ink);outline-offset:1px;font-weight:800;position:relative;z-index:1}
+      #sReach{margin:12px 0 0;font-size:14px;color:var(--steel)}
+      .lead{grid-column:1/-1;border-top:1px solid var(--line);padding:16px 28px;display:grid;grid-template-columns:1fr 2fr;gap:20px;align-items:center}
+      .lead .n{font-size:34px;font-weight:800;letter-spacing:-.03em;line-height:1}.lead small{display:block;color:var(--steel);font-size:13px;margin-top:4px}
+      .track{height:10px;background:var(--tile);position:relative}.track i{position:absolute;inset:0 auto 0 0;background:var(--ink);transition:width .6s}
+      .track+p{margin:8px 0 0;font-size:14px}
+      .ctl{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:14px 0 36px}
+      button{font:inherit;cursor:pointer}
+      .go,.sm{background:var(--ink);color:#fff;border:0;padding:10px 18px;font-weight:700}
+      .sm{padding:6px 12px;font-size:13px;background:transparent;color:var(--ink);border:1px solid var(--ink)}
+      :focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+      section.blk{margin:0 0 44px}
+      .cmp{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+      .m{font-size:14px}.m b{display:block;margin-bottom:8px;font-size:15px}
+      .bar{display:flex;align-items:center;gap:8px;margin:5px 0}.bar span:first-child{width:78px;color:var(--steel);font-size:13px}
+      .bar div{flex:1;height:12px;background:var(--tile)}.bar i{display:block;height:100%;background:var(--steel)}.bar.mdl i{background:var(--ink)}
+      .bar em{font-style:normal;width:52px;text-align:right;font-variant-numeric:tabular-nums}
+      .note{color:var(--steel);font-size:14px;max-width:62ch}
+      .row{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--line);padding:12px 4px;color:inherit}
+      .row:hover{background:var(--white)}.row small{display:block;color:var(--steel)}
+      .dot{width:12px;height:12px;border-radius:50%;background:var(--steel)}.dot.pull{background:var(--red)}.dot.review{background:var(--amber)}
+      .row .p{font-variant-numeric:tabular-nums;font-weight:700}
+      .tools{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+      label{display:block;font-size:13px;color:var(--steel);margin:10px 0 3px}
+      input,textarea{width:100%;font:inherit;padding:9px 10px;border:1px solid var(--line);background:var(--white);color:var(--ink);border-radius:2px}
+      .ex{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+      #scoreOut,#matchOut{margin-top:12px;font-size:14px}
+      footer{color:var(--steel);font-size:13px;border-top:1px solid var(--line);padding-top:14px}
+      @media(max-width:820px){.stage,.tools,.cmp,.lead{grid-template-columns:1fr}}
+      @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+    </style>
+  </head>
+  
+  <body>
+    <div class="wrap">
+      <div class="top"><b>Recall Triage</b><span class="chip">Replay of held out FDA recalls</span><span class="chip" id="plat">Texas food recalls</span></div>
+      <h1>Which recalls reach Texas shelves, and which need to come off today?</h1>
+      <div class="stage" id="stage" data-k="monitor" aria-live="polite">
+      <div class="slab"><p class="tag" id="sTag"></p><div class="tier" id="sTier">Loading</div><h2 id="sFirm"></h2><p id="sProd"></p><p class="why" id="sWhy"></p>
+        <div class="lots">Lots to pull<code id="sLots"></code></div></div>
+      <div class="mapbox"><div id="map" role="img" aria-label="Map of states reached by this recall"></div><p id="sReach"></p></div>
+      <div class="lead" id="lead" hidden><div><div class="n" id="sDays"></div><small>days of potential lead time</small></div>
+        <div><div class="track"><i id="sBar"></i></div><p id="sVerdict"></p></div></div>
+    </div>
+    <div class="ctl"><button class="go" id="play">Start replay</button><span class="note" id="clock">Press start to watch test set recalls arrive in date order.</span></div>
 
-<main>
-<div class="col">
- <section class="panel" aria-labelledby="mh">
-  <div class="ph"><h2 id="mh">Model vs keyword baseline</h2><span class="hint">Time-based test set</span></div>
-  <div id="metrics"><div class="empty">Loading metrics…</div></div>
-  <p class="note" id="note" hidden></p>
- </section>
-
- <section class="panel" aria-labelledby="th">
-  <div class="ph"><h2 id="th">Top Texas alerts</h2><span class="hint">Highest scoring recalls in the replay</span></div>
-  <div id="top" class="scroll"><div class="empty">Loading alerts…</div></div>
- </section>
-
- <section class="panel" aria-labelledby="fh">
-  <div class="ph"><h2 id="fh">Live feed</h2><button class="btn ghost" id="start">Start replay</button></div>
-  <div id="feed" class="scroll" aria-live="polite"><div class="empty">Start the replay to watch recalls arrive in order.</div></div>
- </section>
-</div>
-
-<aside class="col">
- <section class="panel">
-  <div class="tabs" role="tablist">
-   <button class="tab" role="tab" id="t1" aria-selected="true" aria-controls="p1">Score a recall</button>
-   <button class="tab" role="tab" id="t2" aria-selected="false" aria-controls="p2">Check suppliers</button>
-  </div>
-  <div class="pb" id="p1" role="tabpanel" aria-labelledby="t1">
-   <label for="firm">Recalling firm</label><input id="firm" autocomplete="off">
-   <label for="product">Product description</label><input id="product" autocomplete="off">
-   <label for="reason">Reason for recall</label><textarea id="reason" rows="3"></textarea>
-   <label for="dist">Distribution pattern</label><input id="dist" placeholder="TX, OK, LA" autocomplete="off">
-   <div class="actions"><button class="btn" id="score">Score recall</button></div>
-   <div id="scoreOut" aria-live="polite"></div>
-  </div>
-  <div class="pb" id="p2" role="tabpanel" aria-labelledby="t2" hidden>
-   <p class="privacy">Names are matched on this server and never stored.</p>
-   <label for="sup">Supplier names, one per line</label><textarea id="sup" rows="6"></textarea>
-   <div class="actions"><button class="btn" id="match">Check suppliers</button></div>
-   <div id="matchOut" aria-live="polite"></div>
-  </div>
- </section>
-</aside>
-</main>
-
-<script>
-const $=id=>document.getElementById(id);
-const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const cls=t=>String(t||"").startsWith("PULL")?"PULL":String(t||"").startsWith("REVIEW")?"REVIEW":"MONITOR";
-const fmt=v=>typeof v==="number"?v.toFixed(2):esc(v??"n/a");
-async function api(url,opts){const r=await fetch(url,opts);if(!r.ok)throw new Error(r.status);return r.json()}
-
-const row=(r,fresh)=>{
- const s=Math.max(0,Math.min(1,+r.alert_score||0));
- return `<div class="row ${cls(r.tier)}${fresh?" new":""}"><div class="rail"></div>
- <div><div class="firm">${esc(r.recalling_firm)}</div>
-  <div class="prod">${esc((r.product||"").slice(0,110))}</div>
-  <div class="reason">${esc((r.reason||"").slice(0,160))}</div>
-  <div class="meta"><span>Reach <b>${esc((r.states_str||"").slice(0,60)||"n/a")}</b></span>
-   <span>Lots <b>${esc((r.code_info||"none").slice(0,90))}</b></span>
-   <span>FDA class <b>${esc(r.classification)}</b> on ${esc(r.class_date)}</span></div></div>
- <div class="side"><span class="badge ${cls(r.tier)}">${esc(r.tier)}</span>
-  <div class="score num">${s.toFixed(2)}</div><div class="bar"><i style="width:${s*100}%"></i></div>
-  ${r.days_to_class!=null?`<div class="saved num">${esc(r.days_to_class)} days earlier than FDA</div>`:""}</div></div>`};
-
-async function init(){
- try{
-  const m=await api("/api/metrics"),b=m.baseline_keyword,t=m.model_tuned_threshold,d=m.days_initiation_to_classification;
-  const line=(k,x,y)=>`<tr><td>${k}</td><td class="v num">${fmt(x)}</td><td class="v num">${fmt(y)}</td>
-   <td class="v num delta">${typeof x==="number"&&typeof y==="number"?(y>=x?"+":"")+(y-x).toFixed(2):""}</td></tr>`;
-  $("metrics").innerHTML=`<table><thead><tr><th>Metric</th><th class="v">Keyword baseline</th><th class="v">Model</th><th class="v">Change</th></tr></thead><tbody>
-   ${line("Class I recall",b.class1_recall,t.class1_recall)}${line("Macro F1",b.macro_f1,t.macro_f1)}</tbody></table>`;
-  $("note").hidden=false;
-  $("note").textContent=`Model ROC AUC ${m.model_roc_auc}. FDA takes a median of ${d.median} days from recall initiation to classification. That gap is potential time saved in replay, not time saved in practice.`;
- }catch(e){$("metrics").innerHTML=`<div class="err">Couldn’t load metrics. Check that the server is running and reload.</div>`}
- try{
-  const a=await api("/api/alerts?limit=12");
-  $("top").innerHTML=a.length?a.map(x=>row(x)).join(""):`<div class="empty">No alerts in the replay yet.</div>`;
- }catch(e){$("top").innerHTML=`<div class="err">Couldn’t load alerts. Reload to try again.</div>`}
-}
-
-let es=null;
-$("start").onclick=()=>{
- if(es){es.close();es=null}
- const f=$("feed");f.innerHTML=`<div class="empty" id="wait">Waiting for the first recall…</div>`;
- $("start").textContent="Restart replay";
- es=new EventSource("/api/stream?delay=1.2&limit=40");
- es.onmessage=e=>{const w=$("wait");if(w)w.remove();f.insertAdjacentHTML("afterbegin",row(JSON.parse(e.data),true))};
- es.addEventListener("done",()=>{es.close();es=null;$("start").textContent="Replay again"});
- es.onerror=()=>{if(es){es.close();es=null}$("start").textContent="Replay again"};
-};
-
-$("score").onclick=async()=>{
- const btn=$("score");btn.disabled=true;btn.textContent="Scoring…";
- try{
-  const r=await api("/api/score",{method:"POST",headers:{"Content-Type":"application/json"},
-   body:JSON.stringify({firm:$("firm").value||"Unknown firm",product:$("product").value,reason:$("reason").value,distribution:$("dist").value})});
-  $("scoreOut").innerHTML=`<div class="result"><span class="big num">${esc(r.p_class1)}</span><span class="badge ${cls(r.tier)}">${esc(r.tier)}</span>
-   <div class="sub">Probability of Class I</div><div style="margin-top:8px">${esc(r.alert)}</div></div>`;
- }catch(e){$("scoreOut").innerHTML=`<div class="err">Couldn’t score this recall. Fill in the reason and try again.</div>`}
- btn.disabled=false;btn.textContent="Score recall";
-};
-
-$("match").onclick=async()=>{
- const s=$("sup").value.split("\n").map(x=>x.trim()).filter(Boolean);
- if(!s.length){$("matchOut").innerHTML=`<div class="empty">Enter at least one supplier name.</div>`;return}
- const btn=$("match");btn.disabled=true;btn.textContent="Checking…";
- try{
-  const r=await api("/api/match",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({suppliers:s})});
-  $("matchOut").innerHTML=r.map(x=>`<div class="sup"><h3>${esc(x.supplier)}</h3>${
-   x.matches.length?x.matches.map(m=>row(m)).join(""):'<div class="sub">No Texas recalls in the replay.</div>'}</div>`).join("");
- }catch(e){$("matchOut").innerHTML=`<div class="err">Couldn’t check suppliers. Try again.</div>`}
- btn.disabled=false;btn.textContent="Check suppliers";
-};
-
-[["t1","p1"],["t2","p2"]].forEach(([t,p])=>$(t).onclick=()=>{
- [["t1","p1"],["t2","p2"]].forEach(([a,b])=>{$(a).setAttribute("aria-selected",a===t);$(b).hidden=b!==p})});
-
-init();
-</script></body></html>
+    <section class="blk"><h2>Does it beat a keyword rule?</h2><div class="cmp" id="cmp"></div><p class="note" id="cmpNote"></p></section>
+    <section class="blk"><h2>Top Texas alerts</h2><div id="top"></div></section>
+    <section class="blk tools">
+    <div><h2>Score a new recall</h2>
+      <div class="ex"><button class="sm" data-ex="0">Listeria example</button><button class="sm" data-ex="1">Allergen example</button><button class="sm" data-ex="2">Plastic example</button></div>
+      <label for="firm">Recalling firm</label><input id="firm"><label for="product">Product</label><input id="product">
+      <label for="reason">Reason for recall</label><textarea id="reason" rows="3"></textarea>
+      <label for="dist">Where it was distributed</label><input id="dist" placeholder="TX, OK, LA or Nationwide">
+      <p><button class="go" id="score">Score recall</button></p><div id="scoreOut"></div></div>
+    <div><h2>Check my suppliers</h2><p class="note">Names are matched in memory on this server and never stored.</p>
+      <label for="sup">One supplier per line</label><textarea id="sup" rows="6"></textarea>
+      <p><button class="sm" id="fill">Fill with sample suppliers</button> <button class="go" id="match">Check suppliers</button></p><div id="matchOut"></div></div>
+    </section>
+    <footer id="foot">Decision support only. Data: openFDA food enforcement reports. The replay scores recall text that FDA had not yet classified at the time, so lead time is potential, not achieved.</footer>
+    </div>
+    <script>
+    const $=id=>document.getElementById(id);
+    const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+    const G={AK:[0,0],ME:[10,0],WI:[5,1],VT:[9,1],NH:[10,1],WA:[0,2],ID:[1,2],MT:[2,2],ND:[3,2],MN:[4,2],IL:[5,2],MI:[6,2],NY:[8,2],MA:[9,2],OR:[0,3],NV:[1,3],WY:[2,3],SD:[3,3],IA:[4,3],IN:[5,3],OH:[6,3],PA:[7,3],NJ:[8,3],CT:[9,3],RI:[10,3],CA:[0,4],UT:[1,4],CO:[2,4],NE:[3,4],MO:[4,4],KY:[5,4],WV:[6,4],VA:[7,4],MD:[8,4],DE:[9,4],AZ:[1,5],NM:[2,5],KS:[3,5],AR:[4,5],TN:[5,5],NC:[6,5],SC:[7,5],DC:[8,5],OK:[3,6],LA:[4,6],MS:[5,6],AL:[6,6],GA:[7,6],HI:[0,7],TX:[3,7],FL:[8,7],PR:[10,7]};
+    const T={"PULL NOW":["pull","Pull now"],"REVIEW TODAY":["review","Review today"],"MONITOR":["monitor","Monitor"],"NOT TEXAS":["none","Does not reach Texas"]};
+    const EX=[{f:"Sample Foods",p:"Ready to eat chicken salad, 8 oz",r:"Product may be contaminated with Listeria monocytogenes",d:"TX, OK, LA, AR"},
+    {f:"Sample Bakery",p:"Oatmeal cookies, 12 count",r:"Undeclared milk allergen",d:"Nationwide"},
+    {f:"Sample Farms",p:"Frozen mixed vegetables, 16 oz",r:"Small pieces of plastic found in product",d:"CA, OR, WA"}];
+    for(const [s,[c,r]] of Object.entries(G)){const d=document.createElement("div");d.className="tl"+(s==="TX"?" tx":"");d.id="t"+s;d.textContent=s;
+    d.style.gridColumn=c+1;d.style.gridRow=r+1;d.style.setProperty("--d",Math.abs(c-3)+Math.abs(r-7));$("map").appendChild(d);}
+    function show(r,tag){
+    const [k,l]=T[r.tier]||T["MONITOR"];$("stage").dataset.k=k;$("sTier").textContent=l;$("sTag").textContent=tag;
+    $("sFirm").textContent=r.recalling_firm||"Unknown firm";$("sProd").textContent=String(r.product||"").slice(0,140);
+    $("sWhy").textContent=String(r.reason||"").slice(0,200);
+    $("sLots").textContent=String(r.code_info||"").trim().slice(0,220)||"No lot codes listed. Check the recall notice.";
+    const st=String(r.states_str||"").split(",").filter(Boolean),all=st.includes("ALL"),lit=all?Object.keys(G):st;
+    for(const s in G)$("t"+s).classList.toggle("lit",lit.includes(s));
+    $("sReach").textContent=!st.length?"Distribution area not recognized in the notice.":all?"Nationwide distribution, including Texas.":lit.length+" states or territories"+(lit.includes("TX")?", including Texas.":".");
+    const n=r.days_to_class;$("lead").hidden=!(n!=null&&!isNaN(n));
+    if(!$("lead").hidden){$("sDays").textContent=n;$("sBar").style.width=Math.min(100,n/90*100)+"%";
+      const says=+r.pred_class1===1,was=r.classification==="Class I";
+      $("sVerdict").textContent="The model reads the notice on day 0. FDA classified it as "+r.classification+" on "+r.class_date+". Model said "+(says?"Class I":"Class II or III")+" ("+Math.round(r.p_class1*100)+"% Class I). "+(says===was?"Matches FDA.":"Differs from FDA.");}
+    }
+    let ES=null,TOP=[],MAT=[];
+    const rowHtml=(r,i,src)=>{const k=(T[r.tier]||T.MONITOR)[0],s=String(r.states_str||"");
+    return `<button class="row" data-src="${src}" data-i="${i}"><span class="dot ${k}"></span><span><b>${esc(r.recalling_firm)}</b><small>${esc(String(r.product).slice(0,90))}</small></span><span class="p">${Math.round(r.p_class1*100)}%<small>${s.includes("ALL")?"Nationwide":s.split(",").filter(Boolean).length+" states"}</small></span></button>`};
+    document.addEventListener("click",e=>{const b=e.target.closest(".row");if(!b)return;
+    const r=(b.dataset.src==="top"?TOP:MAT)[+b.dataset.i];show(r,b.dataset.src==="top"?"From the top Texas alerts":"Matched to your supplier list");$("stage").scrollIntoView({behavior:"smooth",block:"start"});});
+    async function init(){
+    const m=await (await fetch("/api/metrics")).json(),b=m.baseline_keyword,t=m.model_tuned_threshold,d=m.days_initiation_to_classification;
+    const pc=v=>(v*100).toFixed(1)+"%";
+    $("cmp").innerHTML=[["Class I recalls caught","class1_recall"],["Alerts that were right","class1_precision"],["Overall balance (macro F1)","macro_f1"]].map(([l,k])=>
+      `<div class="m"><b>${l}</b><div class="bar"><span>Keyword rule</span><div><i style="width:${b[k]*100}%"></i></div><em>${pc(b[k])}</em></div><div class="bar mdl"><span>Model</span><div><i style="width:${t[k]*100}%"></i></div><em>${pc(t[k])}</em></div></div>`).join("");
+    $("cmpNote").textContent=`Tested on ${m.test_period[0]} to ${m.test_period[1]}, recalls the model never saw. The model threshold was set on earlier data to catch at least 95% of Class I recalls, which can lower precision. Median time between a recall starting and FDA classifying it: ${d.median} days (middle half: ${d.p25} to ${d.p75}).`;
+    $("foot").insertAdjacentHTML("afterbegin",`${m.n_records} recalls, ${pc(m.texas_reaching_share)} reach Texas, ${pc(m.nationwide_share)} are nationwide. `);
+    TOP=await (await fetch("/api/alerts?limit=12")).json();$("top").innerHTML=TOP.map((r,i)=>rowHtml(r,i,"top")).join("");
+    if(TOP[0])show(TOP[0],"Highest scoring Texas alert in the test set");
+    try{const h=await (await fetch("/api/health")).json();if(h.arch)$("plat").textContent="Running on "+h.arch;}catch(e){}
+    }
+    $("play").onclick=()=>{if(ES)ES.close();let n=0;$("play").textContent="Restart replay";
+    ES=new EventSource("/api/stream?delay=1.6&limit=40");
+    ES.onmessage=e=>{n++;$("clock").textContent="Recall "+n+" of 40 arriving in date order";show(JSON.parse(e.data),"Replay, classified by FDA "+JSON.parse(e.data).class_date)};
+    ES.addEventListener("done",()=>{$("clock").textContent="Replay finished.";ES.close()});ES.onerror=()=>ES.close();};
+    document.querySelectorAll("[data-ex]").forEach(b=>b.onclick=()=>{const x=EX[+b.dataset.ex];$("firm").value=x.f;$("product").value=x.p;$("reason").value=x.r;$("dist").value=x.d;});
+    $("score").onclick=async()=>{
+    if(!$("reason").value.trim()){$("scoreOut").textContent="Enter a reason for the recall, or pick an example above.";return;}
+    const t0=performance.now();
+    const r=await (await fetch("/api/score",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({firm:$("firm").value||"Unknown firm",product:$("product").value,reason:$("reason").value,distribution:$("dist").value})})).json();
+    const ms=Math.round(performance.now()-t0);
+    show({tier:r.tier,recalling_firm:$("firm").value||"Unknown firm",product:$("product").value,reason:$("reason").value,code_info:"",states_str:r.states.join(","),p_class1:r.p_class1,pred_class1:r.pred_class1},"Scored just now in "+ms+" ms round trip");
+    $("scoreOut").textContent=r.alert;$("stage").scrollIntoView({behavior:"smooth",block:"start"});};
+    $("fill").onclick=()=>{$("sup").value=[...new Set(TOP.map(r=>r.recalling_firm))].slice(0,3).concat("Acme Fresh Produce").join("\n");};
+    $("match").onclick=async()=>{
+    const s=$("sup").value.split("\n").map(x=>x.trim()).filter(x=>x.length>=3);
+    if(!s.length){$("matchOut").textContent="Add at least one supplier name, three or more characters.";return;}
+    const r=await (await fetch("/api/match",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({suppliers:s})})).json();
+    MAT=[];const hit=r.filter(x=>x.matches.length).length;
+    $("matchOut").innerHTML=`<p><b>${hit} of ${r.length} suppliers have Texas recalls in the test set.</b></p>`+r.map(x=>`<div><b>${esc(x.supplier)}</b>${x.matches.length?x.matches.map(m=>{MAT.push(m);return rowHtml(m,MAT.length-1,"mat")}).join(""):'<small class="note"> No Texas recalls found.</small>'}</div>`).join("");};
+    init();
+    </script>
+  </body>
+</html>
