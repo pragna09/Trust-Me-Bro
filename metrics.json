@@ -1,0 +1,133 @@
+{
+  "n_records": 29483,
+  "class1_share": 0.4401,
+  "test_period": [
+    "2023-03-24",
+    "2026-10-01"
+  ],
+  "threshold": 0.0676,
+  "baseline_keyword": {
+    "class1_precision": 0.6387,
+    "class1_recall": 0.9489,
+    "class1_f1": 0.7635,
+    "macro_f1": 0.7115,
+    "confusion_[[TN,FP],[FN,TP]]": [
+      [
+        1594,
+        1503
+      ],
+      [
+        143,
+        2657
+      ]
+    ]
+  },
+  "model_at_0.5": {
+    "class1_precision": 0.7348,
+    "class1_recall": 0.8093,
+    "class1_f1": 0.7702,
+    "macro_f1": 0.7707,
+    "confusion_[[TN,FP],[FN,TP]]": [
+      [
+        2279,
+        818
+      ],
+      [
+        534,
+        2266
+      ]
+    ]
+  },
+  "model_tuned_threshold": {
+    "class1_precision": 0.5965,
+    "class1_recall": 0.9579,
+    "class1_f1": 0.7352,
+    "macro_f1": 0.6528,
+    "confusion_[[TN,FP],[FN,TP]]": [
+      [
+        1283,
+        1814
+      ],
+      [
+        118,
+        2682
+      ]
+    ]
+  },
+  "model_roc_auc": 0.824,
+  "texas_subset_model": {
+    "class1_precision": 0.5096,
+    "class1_recall": 0.957,
+    "class1_f1": 0.665,
+    "macro_f1": 0.5981,
+    "confusion_[[TN,FP],[FN,TP]]": [
+      [
+        546,
+        921
+      ],
+      [
+        43,
+        957
+      ]
+    ]
+  },
+  "texas_subset_baseline": {
+    "class1_precision": 0.5799,
+    "class1_recall": 0.925,
+    "class1_f1": 0.7129,
+    "macro_f1": 0.6972,
+    "confusion_[[TN,FP],[FN,TP]]": [
+      [
+        797,
+        670
+      ],
+      [
+        75,
+        925
+      ]
+    ]
+  },
+  "state_parse_coverage": 0.915,
+  "nationwide_share": 0.2069,
+  "texas_reaching_share": 0.4425,
+  "days_initiation_to_classification": {
+    "median": 38.0,
+    "p25": 26.0,
+    "p75": 63.0,
+    "note": "Potential time a model could save, not achieved time saved."
+  },
+  "top_class1_terms": [
+    "reason__salmonella",
+    "reason__egg",
+    "reason__milk",
+    "reason__monocytogenes",
+    "reason__onions",
+    "reason__eggs",
+    "reason__listeria monocytogenes",
+    "reason__listeria",
+    "product__salad",
+    "reason__contaminated salmonella",
+    "reason__sunland",
+    "reason__positive salmonella",
+    "reason__recalling",
+    "reason__sunflower",
+    "reason__lecithin milk"
+  ],
+  "top_class23_terms": [
+    "reason__monocytogenes salmonella",
+    "product__salsa",
+    "reason__metal",
+    "reason__allergen peanut",
+    "reason__mold",
+    "dist__where",
+    "reason__wheat",
+    "reason__plastic",
+    "reason__fragments",
+    "reason__salmonella listeria",
+    "dist__folloiwng",
+    "reason__lecithin",
+    "product__aunt jemima",
+    "product__jemima",
+    "reason__undeclared wheat"
+  ]
+}
