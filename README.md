@@ -22,6 +22,9 @@ Recall Triage is designed to run on secure, high-performance infrastructure to s
 - **Frontend Interface:** Interactive web dashboard accessible through modern web browsers, including Google Chrome.
 - **Version Control:** GitHub — [Trust-Me-Bro/Recall-Triage](https://github.com/Trust-Me-Bro/Recall-Triage).
 
+<img width="6900" height="4380" alt="recall_triage_flowchart" src="https://github.com/user-attachments/assets/6c41e2bd-c4d6-48d6-8bb7-4bf1ecd9d558" />
+
+
 ## 🚀 Getting Started & Local Setup
 
 Follow these steps to connect to the IBM LinuxONE server and access the application through SSH port forwarding.
